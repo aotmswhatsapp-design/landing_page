@@ -1,0 +1,2 @@
+- Global styles and font variables are centralized in `app/globals.css` and referenced from the root layout rather than per-page.
+- Static images are imported through `next/image` with explicit `width`/`height` props instead of plain `<img>` tags.

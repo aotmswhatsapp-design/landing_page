@@ -1,0 +1,1 @@
+Next.js 16.4.6 with React 19.3.0, TypeScript 5, Tailwind CSS 4.3.3 via `@tailwindcss/turbopack`, ESLint 9, and the Next.js Turbopack bundler.

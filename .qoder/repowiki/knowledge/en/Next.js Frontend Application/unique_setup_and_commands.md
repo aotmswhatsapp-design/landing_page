@@ -1,0 +1,1 @@
+Run `npm run dev` to start the Turbopack dev server, `npm run build` for production builds, and `npm run lint` for ESLint checks; the project uses Node ESM-style config files (`eslint.config.mjs`, `next.config.ts`).

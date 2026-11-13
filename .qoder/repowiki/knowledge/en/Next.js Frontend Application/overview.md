@@ -1,0 +1,1 @@
+A Next.js 16 app shell built with React 19, Tailwind CSS v4 via Turbopack, and TypeScript — the default create-next-app template serving as the frontend entry point.

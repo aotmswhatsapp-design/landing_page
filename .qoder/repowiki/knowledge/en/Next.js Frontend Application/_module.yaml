@@ -1,0 +1,9 @@
+schema_version: 1
+module_path: ""
+title: Next.js Frontend Application
+scope:
+    - frontend/
+    - logo.png
+source_files: []
+depends_on: []
+related_to: []
