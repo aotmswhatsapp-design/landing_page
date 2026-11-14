@@ -37,5 +37,7 @@ export const footerColumns: FooterColumn[] = [
 ];
 
 export const footerCredits: FooterCredit[] = [
+  { lead: "Email: ", label: "ameen@aotms.in", href: "mailto:ameen@aotms.in" },
+  { lead: "Phone: ", label: "8019952233", href: "tel:8019952233" },
   { lead: "Want a walkthrough? ", label: "Request a demo", href: "/#demo-form" },
 ];

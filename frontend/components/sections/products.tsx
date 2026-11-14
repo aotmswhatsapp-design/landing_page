@@ -3,7 +3,7 @@
 import { motion, useReducedMotion, type MotionProps } from "framer-motion";
 
 import { ProductIcon } from "@/components/layout/product-icon";
-import { NotchedProjectCard } from "@/components/ui/notched-project-card";
+import { ProductCard } from "@/components/ui/product-card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { products } from "@/lib/content/products";
 
@@ -37,7 +37,10 @@ export function Products() {
   } satisfies MotionProps["variants"];
 
   return (
-    <section id="products" className="relative scroll-mt-24 py-20 sm:py-28">
+    <section
+      id="products"
+      className="relative scroll-mt-18 border-t border-border/60 py-16 sm:py-20"
+    >
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
         <SectionHeading
           eyebrow="Our Products"
@@ -58,11 +61,12 @@ export function Products() {
               variants={itemVariants}
               className="h-full"
             >
-              <NotchedProjectCard
+              <ProductCard
                 href={product.url ?? fallbackHref}
                 title={product.name}
                 description={product.description}
                 icon={<ProductIcon id={product.id} className="size-7" />}
+                image={product.image}
                 badge={String(index + 1).padStart(2, "0")}
                 tags={product.highlights}
               />

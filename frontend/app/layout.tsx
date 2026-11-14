@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: "%s | AOTMS Global",
   },
   description:
-    "AOTMS Global builds business software for learning, sales, communication and operations — LMS, CRM, WhatsApp Automation, AI Calling, PitchBid auction platform and ERP solutions.",
+    "AOTMS Global builds business software for learning, sales, communication and operations — LMS, CRM, WhatsApp Automation, AI Calling, Auction and ERP solutions.",
   applicationName: "AOTMS Global",
 };
 

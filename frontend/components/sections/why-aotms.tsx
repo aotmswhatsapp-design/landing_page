@@ -71,7 +71,10 @@ export function WhyAotms() {
   } satisfies MotionProps["variants"];
 
   return (
-    <section id="why" className="relative scroll-mt-24 py-20 sm:py-28">
+    <section
+      id="why"
+      className="relative scroll-mt-18 border-t border-border/60 py-16 sm:py-20"
+    >
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
         <SectionHeading
           eyebrow="Why AOTMS"
@@ -94,13 +97,13 @@ export function WhyAotms() {
                 key={highlight.title}
                 variants={itemVariants}
                 whileHover={shouldReduceMotion ? undefined : { y: -4 }}
-                className="group relative flex h-full flex-col rounded-2xl border border-border/70 bg-white/55 p-6 transition-[background-color,border-color,box-shadow] duration-300 hover:border-brand/35 hover:bg-white/80 hover:shadow-[0_28px_60px_-34px_rgb(162_104_28/0.45)] sm:p-7"
+                className="group relative flex h-full flex-col rounded-2xl border border-border bg-card/80 p-6 shadow-sm transition-[background-color,border-color,box-shadow] duration-300 hover:border-brand/30 hover:bg-card hover:shadow-md sm:p-7"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <span className="flex size-11 items-center justify-center rounded-xl border border-foreground/10 bg-white/70 text-brand transition-colors duration-300 group-hover:border-brand/40 group-hover:bg-brand/15 group-hover:text-brand">
+                  <span className="flex size-11 items-center justify-center rounded-xl border border-border bg-muted text-brand transition-colors duration-300 group-hover:border-brand/40 group-hover:bg-brand/10">
                     <Icon className="size-5" aria-hidden="true" />
                   </span>
-                  <span className="font-mono text-[11px] font-medium tabular-nums tracking-[0.14em] text-muted-foreground/50 transition-colors duration-300 group-hover:text-muted-foreground/80">
+                  <span className="font-mono text-[11px] font-medium tabular-nums tracking-[0.14em] text-muted-foreground/60 transition-colors duration-300 group-hover:text-muted-foreground">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                 </div>

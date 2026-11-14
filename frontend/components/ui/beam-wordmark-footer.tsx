@@ -33,7 +33,7 @@ import { handleSectionLink } from "@/lib/scroll";
 const clamp = (v: number, lo: number, hi: number): number => (v < lo ? lo : v > hi ? hi : v);
 
 /** "#3d6bff" / "#36f" → "61, 107, 255". Anything unparseable falls back. */
-const hexToRgb = (hex: string, fallback = "224, 164, 87"): string => {
+const hexToRgb = (hex: string, fallback = "56, 189, 248"): string => {
   const m = /^#?([\da-f]{3}|[\da-f]{6})$/i.exec((hex || "").trim());
   if (!m) return fallback;
   const h = m[1].length === 3 ? m[1].replace(/./g, (c) => c + c) : m[1];
@@ -191,6 +191,7 @@ const measureBaseline = (family: string, weight: number, text: string): number =
 
 const isIconName = (v: unknown): v is SocialIcon => typeof v === "string" && v in ICONS;
 const isExternal = (href: string) => /^https?:\/\//i.test(href);
+const isProtocolLink = (href: string) => /^(mailto|tel):/i.test(href);
 
 // One scoped stylesheet. Every rule sits under .bwf; element resets go through
 // :where(.bwf) so they never out-rank the component's own classes or yours.
@@ -203,13 +204,13 @@ const CSS =
   ".bwf svg{max-width:none;display:block}" +
   ".bwf .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}" +
   // The top rule: a hairline of accent, brighter where the beam crosses it.
-  ".bwf-rule{position:absolute;left:0;right:0;top:0;height:1px;z-index:3;background:linear-gradient(90deg,rgba(var(--bwf-acc),.15),rgba(var(--bwf-acc),.55) var(--bwf-b),rgba(var(--bwf-acc),.15))}" +
+  ".bwf-rule{position:absolute;left:0;right:0;top:0;height:2px;z-index:3;background:linear-gradient(90deg,rgba(var(--bwf-acc),.35),rgba(255,90,31,.85) var(--bwf-b),rgba(var(--bwf-acc),.35))}" +
   // Backdrop: dark wash, faint vertical bands, the beam, a soft second beam,
   // the pointer glow, and grain. One frame (the section box) for all of them.
   ".bwf-sky{position:absolute;inset:0;z-index:0;pointer-events:none}" +
-  ".bwf-wash{position:absolute;inset:0;background:radial-gradient(120% 90% at 8% 0%,rgba(var(--bwf-acc),.2),transparent 55%),radial-gradient(90% 70% at 92% 8%,rgba(var(--bwf-acc),.14),transparent 60%),linear-gradient(180deg,rgba(var(--bwf-acc),.06),transparent 70%)}" +
+  ".bwf-wash{position:absolute;inset:0;background:radial-gradient(120% 90% at 8% 0%,rgba(var(--bwf-acc),.24),transparent 55%),radial-gradient(90% 70% at 92% 8%,rgba(255,90,31,.18),transparent 60%),linear-gradient(180deg,rgba(var(--bwf-acc),.08),transparent 70%)}" +
   ".bwf-bands{position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(var(--bwf-acc),.05) 0 1.6cqw,transparent 1.6cqw 4.2cqw);-webkit-mask-image:linear-gradient(100deg,#000 0%,transparent 55%);mask-image:linear-gradient(100deg,#000 0%,transparent 55%);opacity:.9}" +
-  ".bwf-beam{position:absolute;inset:0;filter:blur(calc(1px + 1.6cqw));background:linear-gradient(var(--bwf-ang),transparent calc(var(--bwf-b) - 11%),rgba(var(--bwf-acc),.10) calc(var(--bwf-b) - 5%),rgba(var(--bwf-acc),.34) var(--bwf-b),rgba(var(--bwf-acc),.08) calc(var(--bwf-b) + 4%),transparent calc(var(--bwf-b) + 9%)),linear-gradient(var(--bwf-ang),transparent calc(var(--bwf-b) - 34%),rgba(var(--bwf-acc),.10) calc(var(--bwf-b) - 27%),transparent calc(var(--bwf-b) - 20%))}" +
+  ".bwf-beam{position:absolute;inset:0;filter:blur(calc(1px + 1.6cqw));background:linear-gradient(var(--bwf-ang),transparent calc(var(--bwf-b) - 11%),rgba(var(--bwf-acc),.12) calc(var(--bwf-b) - 5%),rgba(var(--bwf-acc),.36) var(--bwf-b),rgba(255,90,31,.14) calc(var(--bwf-b) + 4%),transparent calc(var(--bwf-b) + 9%)),linear-gradient(var(--bwf-ang),transparent calc(var(--bwf-b) - 34%),rgba(255,90,31,.14) calc(var(--bwf-b) - 27%),transparent calc(var(--bwf-b) - 20%))}" +
   ".bwf-glow{position:absolute;inset:0;opacity:var(--bwf-g);background:radial-gradient(circle 26cqw at var(--bwf-px) var(--bwf-py),rgba(var(--bwf-acc),.16),transparent 70%)}" +
   ".bwf-grain{position:absolute;inset:0;opacity:.14;mix-blend-mode:overlay;background-image:url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")}" +
   // Layout.
@@ -298,6 +299,14 @@ function Anchor({
     );
   }
 
+  if (isProtocolLink(href)) {
+    return (
+      <a className={className} href={href}>
+        {children}
+      </a>
+    );
+  }
+
   return (
     <NextLink
       className={className}
@@ -318,12 +327,12 @@ export function BeamWordmarkFooter({
   credits,
   columns = [],
   cut = 0.14,
-  background = "#211a13",
-  ink = "#f8f2e6",
-  muted = "#b6a795",
-  accent = "#e0a457",
-  wordTop = "#8a5c23",
-  wordFoot = "#15100b",
+  background = "#071124",
+  ink = "#f8fafc",
+  muted = "#94a3b8",
+  accent = "#38bdf8",
+  wordTop = "#1d4ed8",
+  wordFoot = "#040914",
   fontSans = SANS,
   wordWeight = 500,
   animate = true,
@@ -500,12 +509,12 @@ export function BeamWordmarkFooter({
 
   const vars = {
     "--bwf-bg": background,
-    "--bwf-bg-rgb": hexToRgb(background, "33, 26, 19"),
+    "--bwf-bg-rgb": hexToRgb(background, "7, 17, 36"),
     "--bwf-ink": ink,
-    "--bwf-ink-rgb": hexToRgb(ink, "248, 242, 230"),
+    "--bwf-ink-rgb": hexToRgb(ink, "248, 250, 252"),
     "--bwf-muted": muted,
     "--bwf-acc": hexToRgb(accent),
-    "--bwf-lit": hexToRgb(accent),
+    "--bwf-lit": "255, 122, 69",
     "--bwf-wt": wordTop,
     "--bwf-wf": wordFoot,
     "--bwf-sans": fontSans,

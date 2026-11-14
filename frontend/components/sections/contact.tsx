@@ -16,13 +16,16 @@ import { cn } from "@/lib/utils";
 
 const interestOptions = [
   ...products.map((product) => ({ value: product.id, label: product.shortName })),
+  { value: "3d-website-designing", label: "3D Website Designing" },
+  { value: "ai-chatbots", label: "AI Chatbots" },
+  { value: "other", label: "Other (Enter manually)" },
   { value: "not-sure", label: "Not sure yet" },
 ];
 
 const fieldClassName =
-  "h-11 w-full rounded-lg border border-foreground/15 bg-white/60 px-3.5 text-sm text-foreground outline-none transition-[border-color,background-color,box-shadow] duration-200 placeholder:text-muted-foreground/70 hover:border-foreground/25 focus:border-brand/60 focus:bg-white focus:ring-2 focus:ring-brand/25";
+  "h-9.5 w-full rounded-lg border border-border bg-card px-3 text-sm text-foreground shadow-2xs outline-none transition-[border-color,background-color,box-shadow] duration-200 placeholder:text-muted-foreground/70 hover:border-foreground/25 focus:border-brand/60 focus:ring-2 focus:ring-brand/25";
 
-const labelClassName = "mb-2 block text-xs font-medium text-foreground/70";
+const labelClassName = "mb-1 block text-xs font-medium text-muted-foreground";
 
 function Field({
   id,
@@ -43,7 +46,9 @@ function Field({
 export function Contact() {
   const shouldReduceMotion = useReducedMotion();
   const [sent, setSent] = useState(false);
+  const [selectedInterest, setSelectedInterest] = useState("not-sure");
   const configured = contactEmail !== null;
+  const isOther = selectedInterest === "other";
 
   const itemVariants = {
     hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 24 },
@@ -63,14 +68,21 @@ export function Contact() {
 
     const data = new FormData(event.currentTarget);
     const value = (key: string) => String(data.get(key) ?? "").trim();
-    const interest = interestOptions.find((option) => option.value === value("interest"));
+    const interestValue = value("interest");
+    const customInterest = value("customInterest");
+    const interest = interestOptions.find((option) => option.value === interestValue);
+
+    const interestSummary =
+      interestValue === "other" && customInterest
+        ? `Other (${customInterest})`
+        : (interest?.label ?? "Not sure yet");
 
     const lines = [
       `Name: ${value("name")}`,
       `Email: ${value("email")}`,
       ...(value("company") ? [`Company: ${value("company")}`] : []),
       ...(value("phone") ? [`Phone: ${value("phone")}`] : []),
-      `Interested in: ${interest?.label ?? "Not sure yet"}`,
+      `Interested in: ${interestSummary}`,
       "",
       value("message"),
     ];
@@ -83,9 +95,12 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="relative scroll-mt-24 py-20 sm:py-28">
+    <section
+      id="contact"
+      className="relative scroll-mt-18 border-t border-border/60 py-12 sm:py-16"
+    >
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
-        <div className="grid gap-10 md:grid-cols-12 md:gap-8">
+        <div className="grid items-center gap-8 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-6">
             <SectionHeading
               align="left"
@@ -99,7 +114,7 @@ export function Contact() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.4 }}
               variants={itemVariants}
-              className="mt-8 space-y-3"
+              className="mt-6 space-y-2.5"
             >
               {contactPoints.map((point) => (
                 <li
@@ -115,7 +130,7 @@ export function Contact() {
             </motion.ul>
 
             {contactDetails.length > 0 ? (
-              <ul className="mt-8 space-y-3 border-t border-border/70 pt-6">
+              <ul className="mt-6 grid grid-cols-1 gap-3 border-t border-border/70 pt-5 sm:grid-cols-2">
                 {contactDetails.map((detail) => (
                   <li key={detail.label} className="flex flex-col gap-0.5">
                     <span className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
@@ -124,12 +139,14 @@ export function Contact() {
                     {detail.href ? (
                       <a
                         href={detail.href}
-                        className="text-sm text-foreground underline-offset-4 hover:underline"
+                        className="text-sm font-medium text-foreground underline-offset-4 hover:text-brand hover:underline"
                       >
                         {detail.value}
                       </a>
                     ) : (
-                      <span className="text-sm text-foreground">{detail.value}</span>
+                      <span className="text-sm font-medium text-foreground">
+                        {detail.value}
+                      </span>
                     )}
                   </li>
                 ))}
@@ -142,15 +159,15 @@ export function Contact() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.25 }}
             variants={itemVariants}
-            className="md:col-span-5 md:col-start-8"
+            className="md:col-span-6"
           >
             <div
               id="demo-form"
-              className="scroll-mt-28 rounded-2xl border border-border/70 bg-card p-6 sm:p-8"
+              className="scroll-mt-20 rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6"
             >
               {sent ? (
                 <div className="flex flex-col items-start gap-3">
-                  <span className="flex size-11 items-center justify-center rounded-full border border-brand/35 bg-brand/10 text-brand">
+                  <span className="flex size-10 items-center justify-center rounded-full border border-brand/35 bg-brand/10 text-brand">
                     <CircleCheck className="size-5" aria-hidden="true" />
                   </span>
                   <h3 className="text-lg font-semibold tracking-tight text-foreground">
@@ -170,49 +187,81 @@ export function Contact() {
                 </div>
               ) : (
                 <>
-                  <h3 className="text-lg font-semibold tracking-tight text-foreground">
-                    Request a Demo
-                  </h3>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    Share a few details and we&rsquo;ll get back to you.
-                  </p>
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="text-base font-semibold tracking-tight text-foreground sm:text-lg">
+                      Request a Demo
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      Share a few details and we&rsquo;ll get back to you.
+                    </p>
+                  </div>
 
-                  <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <Field id="name" label="Full name" autoComplete="name" required />
+                  <form className="mt-4 space-y-3" onSubmit={handleSubmit}>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <Field
+                        id="name"
+                        label="Full name"
+                        placeholder="Your name"
+                        autoComplete="name"
+                        required
+                      />
                       <Field
                         id="email"
                         label="Work email"
                         type="email"
+                        placeholder="you@company.com"
                         autoComplete="email"
                         required
                       />
-                      <Field id="company" label="Company" autoComplete="organization" />
-                      <Field id="phone" label="Phone" type="tel" autoComplete="tel" />
+                      <Field
+                        id="company"
+                        label="Company"
+                        placeholder="Company name"
+                        autoComplete="organization"
+                      />
+                      <Field
+                        id="phone"
+                        label="Phone"
+                        type="tel"
+                        placeholder="Phone number"
+                        autoComplete="tel"
+                      />
                     </div>
 
-                    <div>
-                      <label className={labelClassName} htmlFor="interest">
-                        Interested in
-                      </label>
-                      <div className="relative">
-                        <select
-                          id="interest"
-                          name="interest"
-                          defaultValue="not-sure"
-                          className={cn(fieldClassName, "appearance-none pr-10")}
-                        >
-                          {interestOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                        <ChevronDown
-                          aria-hidden="true"
-                          className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-                        />
+                    <div className={cn("grid gap-3", isOther && "sm:grid-cols-2")}>
+                      <div>
+                        <label className={labelClassName} htmlFor="interest">
+                          Interested in
+                        </label>
+                        <div className="relative">
+                          <select
+                            id="interest"
+                            name="interest"
+                            value={selectedInterest}
+                            onChange={(event) => setSelectedInterest(event.target.value)}
+                            className={cn(fieldClassName, "appearance-none pr-9")}
+                          >
+                            {interestOptions.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                          <ChevronDown
+                            aria-hidden="true"
+                            className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                          />
+                        </div>
                       </div>
+
+                      {isOther ? (
+                        <Field
+                          id="customInterest"
+                          label="Specify requirement"
+                          placeholder="Type what you are looking for..."
+                          required
+                        />
+                      ) : null}
                     </div>
 
                     <div>
@@ -223,39 +272,33 @@ export function Contact() {
                         id="message"
                         name="message"
                         required
-                        rows={4}
-                        className={cn(fieldClassName, "h-auto min-h-28 resize-y py-3")}
+                        rows={2}
+                        placeholder="Briefly tell us about your requirements..."
+                        className={cn(fieldClassName, "h-auto min-h-16 resize-y py-2")}
                       />
                     </div>
 
-                    <label className="flex items-start gap-2.5 text-xs leading-relaxed text-muted-foreground">
-                      <input
-                        type="checkbox"
-                        name="consent"
-                        required
-                        className="mt-0.5 size-4 shrink-0 rounded border-foreground/25 bg-white accent-brand"
-                      />
-                      <span>I agree to be contacted about my enquiry.</span>
-                    </label>
+                    <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between">
+                      <label className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <input
+                          type="checkbox"
+                          name="consent"
+                          required
+                          className="size-4 shrink-0 rounded border-border bg-card accent-brand"
+                        />
+                        <span>I agree to be contacted about my enquiry.</span>
+                      </label>
 
-                    <OriginButton
-                      type="submit"
-                      size="lg"
-                      disabled={!configured}
-                      className="w-full"
-                    >
-                      Request a Demo
-                    </OriginButton>
-
-                    {!configured ? (
-                      <p className="text-xs leading-relaxed text-muted-foreground/70">
-                        Form delivery isn&rsquo;t connected yet — set the business email in{" "}
-                        <code className="rounded bg-foreground/[0.06] px-1 py-0.5 text-[11px] text-foreground/80">
-                          lib/content/contact.ts
-                        </code>{" "}
-                        to enable sending.
-                      </p>
-                    ) : null}
+                      <OriginButton
+                        type="submit"
+                        variant="outline"
+                        size="md"
+                        disabled={!configured}
+                        className="w-full sm:w-auto sm:min-w-40"
+                      >
+                        Request a Demo
+                      </OriginButton>
+                    </div>
                   </form>
                 </>
               )}

@@ -9,7 +9,6 @@ export type NavItem = {
  */
 export const primaryNav: NavItem[] = [
   { label: "Home", href: "/#hero" },
-  { label: "Why AOTMS", href: "/#why" },
   { label: "Products", href: "/#products" },
   { label: "Solutions", href: "/#solutions" },
   { label: "Features & Benefits", href: "/#features" },

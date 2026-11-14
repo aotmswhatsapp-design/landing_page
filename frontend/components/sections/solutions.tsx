@@ -24,9 +24,7 @@ const solutionIcons: Record<SolutionId, LucideIcon> = {
   "service-business": Headset,
 };
 
-const shortNames = new Map(
-  products.map((product) => [product.id, product.shortName]),
-);
+const productMap = new Map(products.map((product) => [product.id, product]));
 
 export function Solutions() {
   const shouldReduceMotion = useReducedMotion();
@@ -55,10 +53,12 @@ export function Solutions() {
   } satisfies MotionProps["variants"];
 
   return (
-    <section id="solutions" className="relative scroll-mt-24 py-20 sm:py-28">
+    <section
+      id="solutions"
+      className="relative scroll-mt-18 border-t border-border/60 py-16 sm:py-20"
+    >
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
         <SectionHeading
-          align="left"
           eyebrow="Solutions for every business"
           title="Technology Solutions for Every Industry"
           description="Whether you're managing an institution, growing a business or running a sports organization, AOTMS provides technology to simplify your operations."
@@ -78,9 +78,9 @@ export function Solutions() {
               <motion.li
                 key={solution.id}
                 variants={itemVariants}
-                className="group flex h-full flex-col rounded-2xl border border-border/70 bg-linear-to-t from-card to-card/50 p-6 transition-[border-color,box-shadow] duration-300 hover:border-brand/35 hover:shadow-[0_24px_60px_-38px_rgb(162_104_28/0.45)]"
+                className="group flex h-full flex-col rounded-2xl border border-border bg-card/80 p-6 shadow-sm transition-[background-color,border-color,box-shadow] duration-300 hover:border-brand/30 hover:bg-card hover:shadow-md"
               >
-                <span className="flex size-12 items-center justify-center rounded-xl border border-foreground/10 bg-white/70 text-brand transition-colors duration-300 group-hover:border-brand/40 group-hover:bg-brand/15 group-hover:text-brand">
+                <span className="flex size-12 items-center justify-center rounded-xl border border-border bg-muted text-brand transition-colors duration-300 group-hover:border-brand/40 group-hover:bg-brand/10">
                   <Icon className="size-6" aria-hidden="true" />
                 </span>
 
@@ -95,14 +95,22 @@ export function Solutions() {
                   aria-label="Relevant AOTMS products"
                   className="mt-auto flex flex-wrap gap-1.5 pt-6"
                 >
-                  {solution.products.map((productId) => (
-                    <li
-                      key={productId}
-                      className="rounded-md bg-foreground/[0.06] px-2 py-1 text-[11px] font-medium leading-none text-foreground/70"
-                    >
-                      {shortNames.get(productId)}
-                    </li>
-                  ))}
+                  {solution.products.map((productId) => {
+                    const product = productMap.get(productId);
+                    if (!product) return null;
+                    return (
+                      <li key={productId}>
+                        <a
+                          href={product.url ?? "/#products"}
+                          target={product.url ? "_blank" : undefined}
+                          rel={product.url ? "noreferrer noopener" : undefined}
+                          className="inline-block rounded-full border border-border bg-muted px-2.5 py-1 text-[11px] font-medium leading-none text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/10 hover:text-brand"
+                        >
+                          {product.shortName}
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </motion.li>
             );

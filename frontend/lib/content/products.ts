@@ -13,6 +13,8 @@ export type Product = {
   shortName: string;
   description: string;
   highlights: string[];
+  /** Product screenshot in `public/src` when available. */
+  image: string | null;
   /**
    * The product's own website. Paste the URL here and the card's arrow opens
    * it in a new tab; while it is null the arrow falls back to the demo anchor.
@@ -34,7 +36,8 @@ export const products: Product[] = [
       "Trainer Management",
       "Learning Progress Tracking",
     ],
-    url: null,
+    image: "/src/44623.jpg",
+    url: "https://lms.academyoftechmasters.com/",
   },
   {
     id: "crm",
@@ -48,7 +51,8 @@ export const products: Product[] = [
       "Task Management",
       "Attendance and Performance Tracking",
     ],
-    url: null,
+    image: "/src/44621.jpg",
+    url: "https://crm.academyoftechmasters.com/",
   },
   {
     id: "whatsapp-automation",
@@ -62,7 +66,8 @@ export const products: Product[] = [
       "AI Agent",
       "Customer Follow-ups",
     ],
-    url: null,
+    image: "/src/44624.jpg",
+    url: "https://whatsappaotms.vercel.app/",
   },
   {
     id: "ai-calling",
@@ -76,12 +81,13 @@ export const products: Product[] = [
       "Lead Qualification",
       "Call Analytics and Reports",
     ],
-    url: null,
+    image: "/src/Screenshot 2026-11-14 144659.png",
+    url: "https://www.aotms.si/",
   },
   {
     id: "auction-platform",
-    name: "Auction Platform (PitchBid)",
-    shortName: "PitchBid",
+    name: "Auction",
+    shortName: "Auction",
     description:
       "Run live player auctions with team management, transparent bidding and auction handling across different sports.",
     highlights: [
@@ -90,7 +96,8 @@ export const products: Product[] = [
       "Live Bidding",
       "Multi-Sport Auctions",
     ],
-    url: null,
+    image: "/src/44622.jpg",
+    url: "https://auction.aotms.com/",
   },
   {
     id: "erp",
@@ -104,6 +111,7 @@ export const products: Product[] = [
       "Finance Management",
       "Operational Management",
     ],
-    url: null,
+    image: "/src/44625.jpg",
+    url: "https://www.biriyani-box.com/",
   },
 ];

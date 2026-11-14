@@ -1,17 +1,25 @@
 /**
  * Contact details for the "Get a Demo" section.
- *
- * Paste the business email below. Until it is set, the enquiry form renders
- * with the submit disabled rather than silently pretending to send.
  */
-export const contactEmail: string | null = null;
+export const contactEmail: string | null = "ameen@aotms.in";
 
-/** Optional rows shown under the intro, e.g. email / phone / address. */
+/** Contact rows shown under the intro in the Contact section. */
 export const contactDetails: {
   label: string;
   value: string;
   href?: string;
-}[] = [];
+}[] = [
+  {
+    label: "Email",
+    value: "ameen@aotms.in",
+    href: "mailto:ameen@aotms.in",
+  },
+  {
+    label: "Phone",
+    value: "8019952233",
+    href: "tel:8019952233",
+  },
+];
 
 /** What a first conversation covers — no response-time or pricing claims. */
 export const contactPoints = [

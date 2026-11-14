@@ -9,17 +9,19 @@ const FILL_DURATION = 0.5;
 const FILL_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const baseClassName =
-  "relative inline-flex cursor-pointer touch-manipulation select-none items-center justify-center gap-2 overflow-hidden rounded-xl font-medium tracking-[-0.01em] outline-none transition-colors duration-300 focus-visible:ring-3 focus-visible:ring-ring/40 disabled:pointer-events-none disabled:opacity-50";
+  "relative inline-flex cursor-pointer touch-manipulation select-none items-center justify-center gap-2 overflow-hidden rounded-lg font-medium tracking-[-0.01em] outline-none transition-colors duration-300 focus-visible:ring-3 focus-visible:ring-ring/40 disabled:pointer-events-none disabled:opacity-50";
 
 const sizeClasses = {
   sm: "h-9 px-3.5 text-sm",
   md: "h-10 px-5 text-sm",
-  lg: "h-12 px-7 text-[15px]",
+  lg: "h-11 px-6 text-sm",
 } as const;
 
 const variantClasses = {
-  primary: "bg-foreground text-background",
-  outline: "border border-border bg-card/60 text-foreground",
+  primary:
+    "bg-gradient-to-r from-[#FF5A1F] via-[#F97316] to-[#FB923C] text-white shadow-[0_8px_24px_-6px_rgba(255,90,31,0.48)] hover:shadow-[0_12px_28px_-6px_rgba(0,102,255,0.48)]",
+  outline:
+    "bg-gradient-to-r from-[#0052D4] via-[#0066FF] to-[#38BDF8] text-white shadow-[0_8px_24px_-6px_rgba(0,102,255,0.45)] hover:shadow-[0_12px_28px_-6px_rgba(0,102,255,0.58)]",
 } as const;
 
 type Variant = keyof typeof variantClasses;
@@ -109,16 +111,23 @@ function FillOverlay({
   show,
   origin,
   coverSize,
+  variant = "primary",
 }: {
   show: boolean;
   origin: { x: number; y: number };
   coverSize: number;
+  variant?: Variant;
 }) {
   return (
     <motion.span
       animate={{ scale: show && coverSize > 0 ? 1 : 0 }}
       aria-hidden="true"
-      className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,#f8dca8_0%,#e8b366_58%,#c98d34_100%)]"
+      className={cn(
+        "pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full",
+        variant === "primary"
+          ? "bg-[radial-gradient(circle_at_center,#38bdf8_0%,#0066ff_55%,#0052d4_100%)]"
+          : "bg-[radial-gradient(circle_at_center,#0ea5e9_0%,#0052d4_58%,#1e40af_100%)]",
+      )}
       initial={false}
       style={{
         height: coverSize,
@@ -181,7 +190,7 @@ function buttonClassName(
     baseClassName,
     sizeClasses[size],
     variantClasses[variant],
-    filled && "text-foreground",
+    filled && "text-white",
     className,
   );
 }
@@ -258,6 +267,7 @@ function OriginAction({
         show={fill.show}
         origin={fill.origin}
         coverSize={fill.coverSize}
+        variant={variant}
       />
       <span className="relative z-10 inline-flex items-center justify-center gap-2">
         {children}
@@ -322,6 +332,7 @@ function OriginLink({
         show={fill.show}
         origin={fill.origin}
         coverSize={fill.coverSize}
+        variant={variant}
       />
       <span className="relative z-10 inline-flex items-center justify-center gap-2">
         {children}

@@ -3,26 +3,27 @@
 :root {
   color-scheme: light;
 
-  /* Warm cream palette, built from the supplied shader recipe
-     (white · #f7d797 gold · #f7c097 peach). */
-  --background: #fbf7ef;
-  --foreground: #1e1811;
-  --surface: #f6efe2;
-  --card: #fffdf8;
-  --popover: #fffdf8;
-  --popover-foreground: #1e1811;
-  --muted: #f2e9da;
-  --muted-foreground: #6e6152;
-  --border: #e6d8c1;
-  --accent: #f5ead6;
-  --accent-foreground: #1e1811;
-  --primary: #1e1811;
-  --primary-foreground: #fbf7ef;
+  /* Crisp, high-key daylight palette paired with AOTMS Electric Blue & Vibrant Orange */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --surface: #f1f5f9;
+  --card: #ffffff;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #475569;
+  --border: #e2e8f0;
+  --accent: #eff6ff;
+  --accent-foreground: #0f172a;
+  --primary: #0f172a;
+  --primary-foreground: #ffffff;
 
-  /* The shader's gold, deepened far enough to carry text and hairlines. */
-  --brand: #a2681c;
-  --brand-light: #c78b34;
-  --ring: #a2681c;
+  /* Vibrant AOTMS brand accents (drawn from the official blue & orange logo) */
+  --brand: #0066ff;
+  --brand-light: #38bdf8;
+  --brand-orange: #ff5a1f;
+  --brand-orange-light: #fb923c;
+  --ring: #0066ff;
 }
 
 @theme inline {
@@ -41,10 +42,45 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-brand: var(--brand);
   --color-brand-light: var(--brand-light);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-orange-light: var(--brand-orange-light);
   --color-ring: var(--ring);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Slow, seamless loop for the mobile metric pill (track holds two copies). */
+  --animate-marquee: marquee 24s linear infinite;
+  --animate-shimmer: shimmer 3.5s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @layer base {
@@ -60,7 +96,7 @@
   }
 
   ::selection {
-    background-color: color-mix(in oklab, #f7d797 70%, transparent);
+    background-color: color-mix(in oklab, #0066ff 22%, transparent);
     color: var(--foreground);
   }
 
