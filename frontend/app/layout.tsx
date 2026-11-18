@@ -21,6 +21,17 @@ export const metadata: Metadata = {
   description:
     "AOTMS Global builds business software for learning, sales, communication and operations — LMS, CRM, WhatsApp Automation, AI Calling, Auction and ERP solutions.",
   applicationName: "AOTMS Global",
+  icons: {
+    icon: [
+      {
+        url: "/icon.png?v=2",
+        type: "image/png",
+        sizes: "98x98",
+      },
+    ],
+    shortcut: "/icon.png?v=2",
+    apple: "/icon.png?v=2",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

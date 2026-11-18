@@ -52,7 +52,7 @@ export const products: Product[] = [
       "Attendance and Performance Tracking",
     ],
     image: "/src/44621.jpg",
-    url: "https://crm.academyoftechmasters.com/",
+    url: "https://crm.aotms.com/",
   },
   {
     id: "whatsapp-automation",
@@ -67,7 +67,7 @@ export const products: Product[] = [
       "Customer Follow-ups",
     ],
     image: "/src/44624.jpg",
-    url: "https://whatsappaotms.vercel.app/",
+    url: "https://whatsapp.aotms.com/",
   },
   {
     id: "ai-calling",
